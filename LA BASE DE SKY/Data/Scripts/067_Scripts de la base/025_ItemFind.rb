@@ -65,6 +65,10 @@ if Settings::SHOW_ITEM_DESCRIPTIONS_ON_RECEIVE
     def pbShow(item)
       item_object = GameData::Item.try_get(item)
       name = item_object.name
+      if item_object.is_machine?
+        machine = GameData::Item.get(item_object).move
+        name = _INTL("{1} {2}", name, GameData::Move.get(machine).name)
+      end
       description = item_object.description
   
       descwindow = @sprites["descwindow"]
@@ -139,8 +143,8 @@ if Settings::SHOW_ITEM_DESCRIPTIONS_ON_RECEIVE
   #-------------------------------------------------------------------------------
   
   alias pbItemBall_itemfind pbItemBall
-  def pbItemBall(item,quantity=1)
-    result = pbItemBall_itemfind(item,quantity)
+  def pbItemBall(item, quantity = 1, outfit = nil)
+    result = pbItemBall_itemfind(item, quantity, outfit)
     $item_log.register(item) if result
     return result
   end

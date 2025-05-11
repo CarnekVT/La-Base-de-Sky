@@ -868,7 +868,8 @@ Flags = Fling_30
 Description = El Pokémon que lo lleva obtiene parte de los Puntos de Exp. conseguidos en el combate sin participar en él.
 #-------------------------------
 [EXPSHARE2]
-Name = Repartir Exp
+Name = Repartir Exp Equipo
+NamePlural = Repartir Exp Equipo
 Pocket = 8
 Price = 0
 Flags = KeyItem
@@ -900,8 +901,8 @@ Flags = Fling_30
 Description = Si lo lleva el primer Pokémon del equipo, se reduce la probabilidad de que se acerquen Pokémon salvajes.
 #-------------------------------
 [CHOICEBAND]
-Name = Cinta Elegida
-NamePlural = Cintas Elegidas
+Name = Cinta Elección
+NamePlural = Cintas Elección
 Pocket = 1
 Price = 4000
 BPPrice = 25
@@ -909,8 +910,8 @@ Flags = Fling_10
 Description = Aumenta el Ataque pero solo permite usar un tipo de movimiento. Debe llevarla un Pokémon.
 #-------------------------------
 [CHOICESPECS]
-Name = Gafas Elegidas
-NamePlural = Gafas Elegidas
+Name = Gafas Elección
+NamePlural = Gafas Elección
 Pocket = 1
 Price = 4000
 BPPrice = 25
@@ -918,8 +919,8 @@ Flags = Fling_10
 Description = Potencian el At. Esp. pero solo permiten usar un tipo de movimiento. Debe llevarlas un Pokémon.
 #-------------------------------
 [CHOICESCARF]
-Name = Pañuelo Elegido
-NamePlural = Pañuelos Elegidos
+Name = Pañuelo Elección
+NamePlural = Pañuelos Elección
 Pocket = 1
 Price = 4000
 BPPrice = 25
@@ -1298,7 +1299,7 @@ Price = 3000
 SellPrice = 2000
 BPPrice = 25
 Flags = Fling_80
-Description = Garra ligera y afilada que permite que el Pokémon que la lleve ataque el primero ocasionalmente.
+Description = Garra ligera y afilada que permite que el Pokémon que la lleve ataque primero ocasionalmente.
 #-------------------------------
 [FOCUSBAND]
 Name = Cinta Aguante
@@ -6138,7 +6139,7 @@ Pocket = 8
 Price = 0
 FieldUse = Direct
 Flags = KeyItem
-Description = Caña pequeña para guardar fichas.
+Description = Pequeño monedero para guardar fichas.
 #-------------------------------
 [POKEFLUTE]
 Name = Poké Flauta
