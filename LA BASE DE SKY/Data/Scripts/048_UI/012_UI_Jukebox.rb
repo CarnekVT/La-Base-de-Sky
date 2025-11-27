@@ -58,10 +58,6 @@ end
 #
 #===============================================================================
 class PokemonJukeboxScreen
-  HIGHER_ENCOUNTER_RATE_BGM = "Radio - March"
-  LOWER_ENCOUNTER_RATE_BGM  = "Radio - Lullaby"
-  NORMAL_ENCOUNTER_RATE_BGM = "Radio - Oak"
-  
   def initialize(scene)
     @scene = scene
   end
@@ -87,21 +83,21 @@ class PokemonJukeboxScreen
         break
       elsif cmdMarch >= 0 && cmd == cmdMarch
         pbPlayDecisionSE
-        pbBGMPlay(HIGHER_ENCOUNTER_RATE_BGM, 100, 100)
+        pbBGMPlay("Radio - March", 100, 100)
         if $PokemonMap
           $PokemonMap.lower_encounter_rate = false
           $PokemonMap.higher_encounter_rate = true
         end
       elsif cmdLullaby >= 0 && cmd == cmdLullaby
         pbPlayDecisionSE
-        pbBGMPlay(LOWER_ENCOUNTER_RATE_BGM, 100, 100)
+        pbBGMPlay("Radio - Lullaby", 100, 100)
         if $PokemonMap
           $PokemonMap.lower_encounter_rate = true
           $PokemonMap.higher_encounter_rate = false
         end
       elsif cmdOak >= 0 && cmd == cmdOak
         pbPlayDecisionSE
-        pbBGMPlay(NORMAL_ENCOUNTER_RATE_BGM, 100, 100)
+        pbBGMPlay("Radio - Oak", 100, 100)
         if $PokemonMap
           $PokemonMap.lower_encounter_rate = false
           $PokemonMap.higher_encounter_rate = false

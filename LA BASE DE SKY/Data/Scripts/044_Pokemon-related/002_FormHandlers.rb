@@ -434,9 +434,6 @@ MultipleForms.register(:FURFROU, {
 MultipleForms.register(:ESPURR, {
   "getForm" => proc { |pkmn|
     next pkmn.gender
-  },
-  "getFormOnCreation" => proc { |pkmn|
-    next pkmn.gender
   }
 })
 
@@ -472,11 +469,6 @@ MultipleForms.register(:XERNEAS, {
 MultipleForms.register(:ZYGARDE, {
   "getFormOnLeavingBattle" => proc { |pkmn, battle, usedInBattle, endBattle|
     next pkmn.form - 2 if pkmn.form >= 2 && (pkmn.fainted? || endBattle)
-  },
-  "changePokemonOnLeavingBattle" => proc { |pkmn, battle, usedInBattle, endBattle|
-    if endBattle
-      pkmn.moves.each { |move| move.id = :COREENFORCER if move.id == :NIHILLIGHT }
-    end
   }
 })
 
@@ -646,11 +638,11 @@ MultipleForms.register(:EISCUE, {
   }
 })
 
-# MultipleForms.register(:INDEEDEE, {
-#   "getForm" => proc { |pkmn|
-#     next pkmn.gender
-#   }
-# })
+MultipleForms.register(:INDEEDEE, {
+  "getForm" => proc { |pkmn|
+    next pkmn.gender
+  }
+})
 
 MultipleForms.register(:MORPEKO, {
   "getFormOnLeavingBattle" => proc { |pkmn, battle, usedInBattle, endBattle|
@@ -823,13 +815,4 @@ MultipleForms.register(:TERAPAGOS, {
 })
 
 # Cambio de forma en base al género
-MultipleForms.copy(:ESPURR, :INDEEDEE, :LECHONK, :OINKOLOGNE, :BASCULEGION)
-
-# MultipleForms.register(:BASCULEGION, {
-#   "getForm" => proc { |pkmn|
-#     next pkmn.gender
-#   },
-#   "getFormOnCreation" => proc { |pkmn|
-#     next pkmn.gender
-#   }
-# })
+MultipleForms.copy(:ESPURR, :LECHONK, :OINKOLOGNE, :BASCULEGION)

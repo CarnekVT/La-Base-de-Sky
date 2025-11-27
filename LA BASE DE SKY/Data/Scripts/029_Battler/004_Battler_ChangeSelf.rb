@@ -14,7 +14,6 @@ class Battle::Battler
     @battle.scene.pbHPChanged(self, oldHP, anim) if anyAnim && amt > 0
     if amt > 0 && registerDamage
       @droppedBelowHalfHP = true if @hp < @totalhp / 2 && @hp + amt >= @totalhp / 2
-      @droppedBelowThirdHP = true if @hp < @totalhp / 3 && @hp + amt >= @totalhp / 3
       @tookDamageThisRound = true
       @tookMoveDamageThisRound = true
     end
@@ -32,7 +31,6 @@ class Battle::Battler
     raise _INTL("PS más grandes que PS totales") if @hp > @totalhp
     @battle.scene.pbHPChanged(self, oldHP, anim) if anyAnim && amt > 0
     @droppedBelowHalfHP = false if @hp >= @totalhp / 2
-    @droppedBelowThirdHP = false if @hp >= @totalhp / 3
     return amt
   end
 
@@ -55,7 +53,6 @@ class Battle::Battler
 
   def pbTakeEffectDamage(amt, show_anim = true)
     @droppedBelowHalfHP = false
-    @droppedBelowThirdHP = false
     hp_lost = pbReduceHP(amt, show_anim)
     yield hp_lost if block_given?   # Show message
     pbItemHPHealCheck
@@ -170,7 +167,6 @@ class Battle::Battler
     if abilityActive? && @proteanTrigger # Protean/Libero
       Battle::AbilityEffects.triggerOnTypeChange(self.ability, self, newType)
     end 
-    @battle.scene.pbRefreshOne(self.index) if @battle.scene && !fainted?
   end
 
   def pbResetTypes
@@ -179,7 +175,6 @@ class Battle::Battler
     @effects[PBEffects::BurnUp] = false
     @effects[PBEffects::Roost]  = false
     @effects[PBEffects::DoubleShock] = false
-    @battle.scene.pbRefreshOne(self.index) if @battle.scene && !fainted?
   end
 
   #=============================================================================

@@ -38,7 +38,7 @@
 class Scene_Credits
   # Backgrounds to show in credits. Found in Graphics/Titles/ folder
   BACKGROUNDS_LIST       = ["credits1", "credits2", "credits3", "credits4", "credits5"]
-  CREDITS_BGM                    = "Credits"
+  BGM                    = "Credits"
   SCROLL_SPEED           = 40   # Pixels per second
   SECONDS_PER_BACKGROUND = 11
   TEXT_OUTLINE_COLOR     = Color.new(0, 0, 128, 255)
@@ -184,7 +184,7 @@ class Scene_Credits
     pbBGSStop
     pbSEStop
     pbBGMFade(2.0)
-    pbBGMPlay(CREDITS_BGM)
+    pbBGMPlay(BGM)
     Graphics.transition
     loop do
       Graphics.update

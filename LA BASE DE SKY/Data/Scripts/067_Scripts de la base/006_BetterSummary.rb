@@ -3,14 +3,13 @@
 # DPertierra
 #===============================================================================
 class PokemonSummary_Scene
-  def pbStartScene(party, partyindex, inbattle = false, page=1, allow_learn_moves = true)
+  def pbStartScene(party, partyindex, inbattle = false, page=1)
       @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
       @viewport.z = 99999
       @party      = party
       @partyindex = partyindex
       @pokemon    = @party[@partyindex]
       @inbattle   = inbattle
-      @allow_learn_moves = allow_learn_moves
       @page = page
       @typebitmap    = AnimatedBitmap.new(_INTL("Graphics/UI/types"))
       @markingbitmap = AnimatedBitmap.new("Graphics/UI/Summary/markings")
@@ -18,13 +17,11 @@ class PokemonSummary_Scene
       @sprites["background"] = IconSprite.new(0, 0, @viewport)
       @sprites["pokemon"] = PokemonSprite.new(@viewport)
       @sprites["pokemon"].setOffset(PictureOrigin::CENTER)
-      @sprites["pokemon"].make_grey_if_fainted = @pokemon.fainted?
       @sprites["pokemon"].x = 104
       @sprites["pokemon"].y = 206
       @sprites["pokemon"].setPokemonBitmap(@pokemon)
       @sprites["pokeicon"] = PokemonIconSprite.new(@pokemon, @viewport)
       @sprites["pokeicon"].setOffset(PictureOrigin::CENTER)
-      @sprites["pokeicon"].make_grey_if_fainted = @pokemon.fainted?
       @sprites["pokeicon"].x       = 46
       @sprites["pokeicon"].y       = 92
       @sprites["pokeicon"].visible = false
@@ -226,7 +223,7 @@ class PokemonSummary_Scene
             break
           elsif Input.trigger?(Input::ACTION)
             newScene = PokemonSummary_Scene.new
-            newScreen = PokemonSummaryScreen.new(newScene, @inbattle, false)
+            newScreen = PokemonSummaryScreen.new(newScene)
             newScreen.pbStartScreen(@party, @partyindex, 3)
           elsif Input.trigger?(Input::UP)
             selmove -= 1
@@ -393,7 +390,7 @@ end
 
 class PokemonSummaryScreen
     def pbStartScreen(party, partyindex, page=1)
-        @scene.pbStartScene(party, partyindex, @inbattle, page, @allow_learn_moves)
+        @scene.pbStartScene(party, partyindex, @inbattle, page)
         ret = @scene.pbScene
         @scene.pbEndScene
         return ret

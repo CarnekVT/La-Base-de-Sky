@@ -59,7 +59,6 @@ class Battle
       # Switch Pokémon
       allBattlers.each do |b2|
         b2.droppedBelowHalfHP = false
-        b2.droppedBelowThirdHP = false
         b2.statsDropped = false
       end
       pbRecallAndReplace(b.index, idxNewPkmn)

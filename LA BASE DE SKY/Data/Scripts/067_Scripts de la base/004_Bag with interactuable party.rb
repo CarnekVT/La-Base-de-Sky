@@ -125,7 +125,6 @@ class Window_PokemonBag < Window_DrawableCommand
   attr_accessor :sorting
   attr_accessor :party1sel
   attr_accessor :party2sel
-  attr_accessor :filterlist
 
   def initialize(bag, filterlist, pocket, x, y, width, height)
     @bag        = bag
@@ -1172,13 +1171,8 @@ class PokemonBag_Scene
             if option != -1 && option < sort_keys.length
               sorted_pocket = sort_pocket(sort_keys[option], thispocket, itemwindow.pocket)
               if sorted_pocket && !sorted_pocket.empty?
-                @bag.pockets[itemwindow.pocket] = sorted_pocket
-                thispocket = @bag.pockets[itemwindow.pocket]
-                # Refresh filter list if filtering is active
-                if @filterlist
-                  pbRefreshFilter
-                  itemwindow.filterlist = @filterlist
-                end
+                thispocket = sorted_pocket
+                @bag.pockets[itemwindow.pocket] = thispocket
                 pbPlayDecisionSE
                 pbRefresh
               end
@@ -1660,7 +1654,7 @@ class PokemonBagScreen
         end
         if qty > 0
           itemname = (qty > 1) ? itm.portion_name_plural : itm.portion_name
-          if pbConfirm(_INTL("¿Segur{1} que quieres tirar {2} {3}?",$player.female? ? 'a' : 'o', qty, itemname))
+          if pbConfirm(_INTL("¿Seguro que quieres tirar {1} {2}?", qty, itemname))
             pbDisplay(_INTL("Has tirado {1} {2}.", qty, itemname))
             qty.times { @bag.remove(item) }
             @scene.pbRefresh
@@ -1832,7 +1826,7 @@ class PokemonBagScreen
       end
       next if qty <= 0
       itemname = itemnameplural if qty > 1
-      next if !pbConfirm(_INTL("¿Segur{1} que quieres tirar {2} {3}?", $player.female? ? 'a' : 'o', qty, itemname))
+      next if !pbConfirm(_INTL("¿Seguro que quieres tirar {1} {2}?", qty, itemname))
       if !storage.remove(item, qty)
         raise "No se pueden borrar objetos del almacenamiento"
       end

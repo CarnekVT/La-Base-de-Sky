@@ -35,9 +35,7 @@ module Settings
   # Activa el nuevo repartir experiencia que se puede activar para cada pokemon del equipo.
   USE_NEW_EXP_SHARE = true
 
-  ## HABILITAR EL REAPATIR EXPERIENCIA desde el inicio de la partida, sin necesidad de dar ningun objeto
-  ## o de activar el $player.has_exp_all, si desean activar el expshare para todos los pokemons, con alguno
-  ## de los 2 metodos mencionados anteriormente, deben dejar esta variable en false.
+  ## HABILITAR EL REAPATIR EXPERIENCIA desde el inicio de la partida
   EXPSHARE_ENABLED = true
 
 
@@ -69,10 +67,8 @@ module Settings
   # especies nuevas.
   SHOW_TYPE_EFFECTIVENESS_FOR_NEW_SPECIES = false
 
-  # Cuando un Pokemon es debilitado todos sus sprites se veran grisados
-  # Al curarlo vuelven a su color original
-  GREY_OUT_FAINTED = true
-  
+
+
 ################################################################################
 #  POKÉDEX AVANZADA
 ################################################################################
@@ -95,11 +91,7 @@ module Settings
   ADVANCED_DEX_PAGE = 4
 
   # # Mostrar Siluetas para los Pokemon no vistos en la dex
-  SHOW_SILHOUETTES_IN_DEX = false
-
-  # Mostrar cambios de stats respecto a los juegos oficiales
-  # Para esto se utiliza la PokeAPI, si no hay internet no hará nada
-  SHOW_STAT_CHANGES_WITH_POKEAPI = false
+  SHOW_SILHOUETTES_IN_DEX = true
 
 
   
@@ -256,11 +248,9 @@ MAPAS_SIN_REFLEJO = []
 REGIONAL_SPECIES = [:RATTATA,:RATICATE,:RAICHU,:SANDSHREW,:SANDSLASH,:VULPIX,:NINETALES,:DIGLETT,:DUGTRIO,
                     :MEOWTH,:PERSIAN,:GEODUDE,:GRAVELER,:GOLEM,:PONYTA,:RAPIDASH,:SLOWPOKE,:SLOWBRO,:FARFETCHD,:GRIMER,:MUK,
                     :EXEGGUTOR,:MAROWAK,:WEEZING,:MRMIME,:ARTICUNO,:ZAPDOS,:MOLTRES,:SLOWKING,:CORSOLA,
-                    :ZIGZAGOON,:LINOONE,:DARUMAKA,:DARMANITAN,:YAMASK,:STUNFISK,:LYCANROC, :GROWLITHE,:ARCANINE,
-                    :VOLTORB,:ELECTRODE,:TAUROS,:TYPHLOSION,:WOOPER,:QWILFISH,:SNEASEL,:SAMUROTT,
-                    :LILLIGANT,:ZORUA,:ZOROARK,:BRAVIARY,:SLIGGOO,:GOODRA,:BERGMITE,:AVALUGG,:DECIDUEYE,
-                    :PIKACHU, :URSALUNA, :FLABEBE, :FLOETTE, :FLORGES, :SHELLOS, :GASTRODON, :BURMY, :WORMADAM,
-                    :ORICORIO, :BASCULIN, :SQUAWKABILLY, :VIVILLON]
+                    :ZIGZAGOON,:LINOONE, :DARUMAKA,:DARMANITAN,:YAMASK,:STUNFISK,:LYCANROC, :GROWLITHE,:ARCANINE,
+                    :VOLTORB,:ELECTRODE,:TAUROS,:CYNDAQUIL,:QUILAVA,:TYPHLOSION,:WOOPER,:QWILFISH,:SNEASEL,:OSHAWOTT,:DEWOTT,:SAMUROTT,
+                    :PETILIL,:LILLIGANT,:ZORUA,:ZOROARK,:RUFFLET,:BRAVIARY,:GOOMY,:SLIGGOO,:GOODRA,:BERGMITE,:AVALUGG,:ROWLET,:DARTRIX,:DECIDUEYE]
 
 #######################################################################################
 # LISTADO DE FORMAS DE POKÉMON NO PERMITIDAS

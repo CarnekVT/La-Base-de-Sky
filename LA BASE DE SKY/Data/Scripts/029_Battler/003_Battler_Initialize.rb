@@ -90,12 +90,6 @@ class Battle::Battler
     end
   end
 
-  def refresh_moves
-    @pokemon.moves.each_with_index do |m, i|
-      @moves[i] = Battle::Move.from_pokemon_move(@battle, m)
-    end
-  end
-
   def pbInitEffects(batonPass)
     if batonPass
       # These effects are passed on if Baton Pass is used, but they need to be
@@ -137,7 +131,6 @@ class Battle::Battler
     @lastHPLost              = 0
     @lastHPLostFromFoe       = 0
     @droppedBelowHalfHP      = false
-    @droppedBelowThirdHP     = false
     @statsDropped            = false
     @tookMoveDamageThisRound = false
     @tookDamageThisRound     = false
@@ -154,7 +147,6 @@ class Battle::Battler
     @lastRoundMoveFailed     = false
     @movesUsed               = []
     @turnCount               = 0
-    @battle.abilitiesUsedPerSwitchIn[idxOwnSide][@pokemonIndex].clear
     @effects[PBEffects::Attract]             = -1
     @battle.allBattlers.each do |b|   # Other battlers no longer attracted to self
       b.effects[PBEffects::Attract] = -1 if b.effects[PBEffects::Attract] == @index
