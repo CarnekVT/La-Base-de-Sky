@@ -180,7 +180,7 @@ end
 # Paralyzes the target. Accuracy perfect in rain, 50% in sunshine. Hits some
 # semi-invulnerable targets. (Thunder)
 #===============================================================================
-class Battle::Move::ParalyzeTargetAlwaysHitsInRainHitsTargetInSky < Battle::Move::ParalyzeTarget
+class Battle::Move::ParalyzeTargetAlwaysHitsInRainHitsDecreasesInSunTargetInSky < Battle::Move::ParalyzeTarget
   def hitsFlyingTargets?; return true; end
 
   def pbBaseAccuracy(user, target)
@@ -918,6 +918,7 @@ class Battle::Move::AddGhostTypeToTarget < Battle::Move
     target.effects[PBEffects::ExtraType] = :GHOST
     typeName = GameData::Type.get(:GHOST).name
     @battle.pbDisplay(_INTL("¡{1} ha cambiado a tipo {2}!", target.pbThis, typeName))
+    @battle.scene.pbRefreshOne(target.index)
   end
 end
 
@@ -939,6 +940,7 @@ class Battle::Move::AddGrassTypeToTarget < Battle::Move
     target.effects[PBEffects::ExtraType] = :GRASS
     typeName = GameData::Type.get(:GRASS).name
     @battle.pbDisplay(_INTL("¡{1} ha cambiado a tipo {2}!", target.pbThis, typeName))
+    @battle.scene.pbRefreshOne(target.index)
   end
 end
 
@@ -955,9 +957,10 @@ class Battle::Move::UserLosesFireType < Battle::Move
   end
 
   def pbEffectAfterAllHits(user, target)
-    if !user.effects[PBEffects::BurnUp]
+    if !user.effects[PBEffects::BurnUp] && !target.damageState.unaffected
       user.effects[PBEffects::BurnUp] = true
       @battle.pbDisplay(_INTL("¡El fuego interior de {1} se ha extinguido!", user.pbThis(true)))
+      @battle.scene.pbRefreshOne(user.index)
     end
   end
 end
@@ -1260,7 +1263,7 @@ class Battle::Move::IgnoreTargetAbility < Battle::Move
   end
   
   def pbOnStartUse(user, targets)
-    if @battle.moldBreaker && targets[0].hasActiveItem?(:ABILITYSHIELD)
+    if @battle.moldBreaker && targets[0] && targets[0].hasActiveItem?(:ABILITYSHIELD)
       @battle.moldBreaker = false
     end
   end
@@ -1470,6 +1473,7 @@ class Battle::Move::RemoveUserBindingAndEntryHazardsPoisonTarget < Battle::Move:
     end
     if user.pbOwnSide.effects[PBEffects::StealthRock]
       user.pbOwnSide.effects[PBEffects::StealthRock] = false
+      @battle.scene.pbUpdateHazardSprites if @battle.scene.respond_to?(:pbUpdateHazardSprites)
       @battle.pbDisplay(_INTL("Las piedras puntiagudas lanzadas a {1} han desaparecido.", user.pbTeam))
     end
     if defined?(PBEffects::Steelsurge) && user.pbOwnSide.effects[PBEffects::Steelsurge]
@@ -1478,14 +1482,17 @@ class Battle::Move::RemoveUserBindingAndEntryHazardsPoisonTarget < Battle::Move:
     end
     if user.pbOwnSide.effects[PBEffects::Spikes] > 0
       user.pbOwnSide.effects[PBEffects::Spikes] = 0
+      @battle.scene.pbUpdateHazardSprites if @battle.scene.respond_to?(:pbUpdateHazardSprites)
       @battle.pbDisplay(_INTL("Las púas lanzadas a {1} han desaparecido.", user.pbTeam))
     end
     if user.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
       user.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
+      @battle.scene.pbUpdateHazardSprites if @battle.scene.respond_to?(:pbUpdateHazardSprites)
       @battle.pbDisplay(_INTL("Las púas tóxicas lanzadas a {1} han desaparecido.", user.pbTeam))
     end
     if user.pbOwnSide.effects[PBEffects::StickyWeb]
       user.pbOwnSide.effects[PBEffects::StickyWeb] = false
+      @battle.scene.pbUpdateHazardSprites if @battle.scene.respond_to?(:pbUpdateHazardSprites)
       @battle.pbDisplay(_INTL("La red viscosa lanzada a {1} ha desaparecido.", user.pbTeam))
     end
   end
@@ -1549,6 +1556,7 @@ class Battle::Move::DamageTargetAddSpikesToFoeSide < Battle::Move
     return if target.pbOwnSide.effects[PBEffects::Spikes] == 3
     target.pbOwnSide.effects[PBEffects::Spikes] += 1
     @battle.pbAnimation(:SPIKES, user, target)
+    @battle.scene.pbUpdateHazardSprites if @battle.scene.respond_to?(:pbUpdateHazardSprites)
     @battle.pbDisplay(_INTL("¡Se espacieron púas alrededor de {1}!", user.pbOpposingTeam(true)))
   end
 end
@@ -1563,6 +1571,7 @@ class Battle::Move::DamageTargetAddStealthRocksToFoeSide < Battle::Move
     return if target.pbOwnSide.effects[PBEffects::StealthRock]
     target.pbOwnSide.effects[PBEffects::StealthRock] = true
     @battle.pbAnimation(:STEALTHROCK, user, target)
+    @battle.scene.pbUpdateHazardSprites if @battle.scene.respond_to?(:pbUpdateHazardSprites)
     @battle.pbDisplay(_INTL("¡Rocas puntiagudas flotan en el aire alrededor de {1}!", user.pbOpposingTeam(true)))
   end
 end
@@ -1593,10 +1602,53 @@ class Battle::Move::UserLosesElectricType < Battle::Move
   end
 
   def pbEffectAfterAllHits(user, target)
-    if !user.effects[PBEffects::DoubleShock]
+    if !user.effects[PBEffects::DoubleShock] && !target.damageState.unaffected
       user.effects[PBEffects::DoubleShock] = true
       @battle.pbDisplay(_INTL("¡{1} ha usado toda su electricidad!", user.pbThis))
+      @battle.scene.pbRefreshOne(user.index)
     end
+  end
+end
+
+#===============================================================================
+# Paralyzes the target. Accuracy perfect in rain.
+# Electormenta / WILDBOLTSTORM
+#===============================================================================
+class Battle::Move::ParalyzeTargetAlwaysHitsInRain < Battle::Move::ParalyzeTarget
+  def pbBaseAccuracy(user, target)
+    case target.effectiveWeather
+    when :Rain, :HeavyRain
+      return 0
+    end
+    return super
+  end
+end
+
+#===============================================================================
+# Burns the target. Accuracy perfect in rain.
+# Simún de Arena / SANDSEARSTORM
+#===============================================================================
+class Battle::Move::BurnTargetAlwaysHitsInRain < Battle::Move::BurnTarget
+  def pbBaseAccuracy(user, target)
+    case target.effectiveWeather
+    when :Rain, :HeavyRain
+      return 0
+    end
+    return super
+  end
+end
+
+#===============================================================================
+# Lowers the target's Speed. Accuracy perfect in rain.
+# Vendaval Gélido / BLEAKWINDSTORM
+#===============================================================================
+class Battle::Move::LowerTargetSpeed1AlwaysHitsInRain < Battle::Move::LowerTargetSpeed1
+  def pbBaseAccuracy(user, target)
+    case target.effectiveWeather
+    when :Rain, :HeavyRain
+      return 0
+    end
+    return super
   end
 end
 
