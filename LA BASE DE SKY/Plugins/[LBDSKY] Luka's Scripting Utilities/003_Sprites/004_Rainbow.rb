@@ -35,11 +35,12 @@ end
 #  Class used to render a hue changing sprite
 #===============================================================================
 class RainbowSprite < Sprites::Rainbow
+  attr_accessor :speed
   #-----------------------------------------------------------------------------
   #  sets bitmap to sprite
   #-----------------------------------------------------------------------------
   def setBitmap(val, speed = 1)
-    Sprites::Scrolling.instance_method(:set_bitmap).bind(self).call(val, speed: speed)
+    super.set_bitmap(val, speed)
   end
   #-----------------------------------------------------------------------------
 end
